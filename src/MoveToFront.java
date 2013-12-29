@@ -6,7 +6,7 @@ public class MoveToFront {
         for (int i = 0; i < 256; i++)
             charAtIndex[i] = i;
 
-        while (!BinaryStdIn.isEmpty()){
+        while (!BinaryStdIn.isEmpty()) {
             char readChar = BinaryStdIn.readChar(8);
             int currentCharIndex = 0;
             while (charAtIndex[currentCharIndex] != readChar)
@@ -28,7 +28,7 @@ public class MoveToFront {
         for (int i = 0; i < 256; i++)
             charAtIndex[i] = i;
 
-        while (!BinaryStdIn.isEmpty()){
+        while (!BinaryStdIn.isEmpty()) {
             int curCharIndex = BinaryStdIn.readChar(8);
             int curChar = charAtIndex[curCharIndex];
             BinaryStdOut.write(curChar, 8);
