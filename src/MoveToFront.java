@@ -6,11 +6,8 @@ public class MoveToFront {
         for (int i = 0; i < 256; i++)
             charAtIndex[i] = i;
 
-        String s = BinaryStdIn.readString();
-        char[] input = s.toCharArray();
-
-        for (int i = 0; i < input.length; i++) {
-            char readChar = input[i];
+        while (!BinaryStdIn.isEmpty()){
+            char readChar = BinaryStdIn.readChar(8);
             int currentCharIndex = 0;
             while (charAtIndex[currentCharIndex] != readChar)
                 currentCharIndex++;
@@ -26,17 +23,13 @@ public class MoveToFront {
 
     // apply move-to-front decoding, reading from standard input and writing to standard output
     public static void decode() {
-
-        String s = BinaryStdIn.readString();
-        char[] input = s.toCharArray();
-
         int[] charAtIndex = new int[256];
 
         for (int i = 0; i < 256; i++)
             charAtIndex[i] = i;
 
-        for (int j = 0; j < input.length; j++) {
-            int curCharIndex = input[j];
+        while (!BinaryStdIn.isEmpty()){
+            int curCharIndex = BinaryStdIn.readChar(8);
             int curChar = charAtIndex[curCharIndex];
             BinaryStdOut.write(curChar, 8);
 
