@@ -1,26 +1,26 @@
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 
-/*************************************************************************
- *  Compilation:  javac Huffman.java
- *  Execution:    java Huffman - < input.txt   (compress)
- *  Execution:    java Huffman + < input.txt   (expand)
- *  Dependencies: BinaryIn.java BinaryOut.java
- *  Data files:   http://algs4.cs.princeton.edu/55compression/abra.txt
- *                http://algs4.cs.princeton.edu/55compression/tinytinyTale.txt
- *
- *  Compress or expand a binary input stream using the Huffman algorithm.
- *
- *  % java Huffman - < abra.txt | java BinaryDump 60
- *  010100000100101000100010010000110100001101010100101010000100
- *  000000000000000000000000000110001111100101101000111110010100
- *  120 bits
- *
- *  % java Huffman - < abra.txt | java Huffman +
- *  ABRACADABRA!
- *
- *************************************************************************/
+/**
+ * **********************************************************************
+ * Compilation:  javac Huffman.java
+ * Execution:    java Huffman - < input.txt   (compress)
+ * Execution:    java Huffman + < input.txt   (expand)
+ * Dependencies: BinaryIn.java BinaryOut.java
+ * Data files:   http://algs4.cs.princeton.edu/55compression/abra.txt
+ * http://algs4.cs.princeton.edu/55compression/tinytinyTale.txt
+ * <p/>
+ * Compress or expand a binary input stream using the Huffman algorithm.
+ * <p/>
+ * % java Huffman - < abra.txt | java BinaryDump 60
+ * 010100000100101000100010010000110100001101010100101010000100
+ * 000000000000000000000000000110001111100101101000111110010100
+ * 120 bits
+ * <p/>
+ * % java Huffman - < abra.txt | java Huffman +
+ * ABRACADABRA!
+ * <p/>
+ * ***********************************************************************
+ */
 
 public class Huffman {
 
@@ -34,9 +34,9 @@ public class Huffman {
         private final Node left, right;
 
         Node(char ch, int freq, Node left, Node right) {
-            this.ch    = ch;
-            this.freq  = freq;
-            this.left  = left;
+            this.ch = ch;
+            this.freq = freq;
+            this.left = left;
             this.right = right;
         }
 
@@ -83,11 +83,9 @@ public class Huffman {
             for (int j = 0; j < code.length(); j++) {
                 if (code.charAt(j) == '0') {
                     BinaryStdOut.write(false);
-                }
-                else if (code.charAt(j) == '1') {
+                } else if (code.charAt(j) == '1') {
                     BinaryStdOut.write(true);
-                }
-                else throw new IllegalStateException("Illegal state");
+                } else throw new IllegalStateException("Illegal state");
             }
         }
 
@@ -106,7 +104,7 @@ public class Huffman {
 
         // merge two smallest trees
         while (pq.size() > 1) {
-            Node left  = pq.delMin();
+            Node left = pq.delMin();
             Node right = pq.delMin();
             Node parent = new Node('\0', left.freq + right.freq, left, right);
             pq.insert(parent);
@@ -130,10 +128,9 @@ public class Huffman {
     // make a lookup table from symbols and their encodings
     private static void buildCode(String[] st, Node x, String s) {
         if (!x.isLeaf()) {
-            buildCode(st, x.left,  s + '0');
+            buildCode(st, x.left, s + '0');
             buildCode(st, x.right, s + '1');
-        }
-        else {
+        } else {
             st[x.ch] = s;
         }
     }
@@ -154,7 +151,7 @@ public class Huffman {
             while (!x.isLeaf()) {
                 boolean bit = BinaryStdIn.readBoolean();
                 if (bit) x = x.right;
-                else     x = x.left;
+                else x = x.left;
             }
             BinaryStdOut.write(x.ch, 8);
         }
@@ -166,16 +163,14 @@ public class Huffman {
         boolean isLeaf = BinaryStdIn.readBoolean();
         if (isLeaf) {
             return new Node(BinaryStdIn.readChar(), -1, null, null);
-        }
-        else {
+        } else {
             return new Node('\0', -1, readTrie(), readTrie());
         }
     }
 
 
     public static void main(String[] args) throws FileNotFoundException {
-        System.setIn(new FileInputStream("abra.txt"));
-        if      (args[0].equals("-")) compress();
+        if (args[0].equals("-")) compress();
         else if (args[0].equals("+")) expand();
         else throw new IllegalArgumentException("Illegal command line argument");
     }

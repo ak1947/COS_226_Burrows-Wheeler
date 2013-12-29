@@ -3,11 +3,13 @@ public class CircularSuffixArray {
     {
 
     }
+
     public int length()                   // length of s
     {
-                 return 0;
+        return 0;
 
     }
+
     public int index(int i)               // returns index of ith sorted suffix
     {
         return 0;
