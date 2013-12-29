@@ -12,29 +12,31 @@ public class CircularSuffixArray {
         msdSort(0, index.length - 1, 0);
 
 //        System.out.println("Yay");
-//        for (int i:index)
-//            System.out.print(i);
-//
-//
-//        for (int i:index)
-//            System.out.print(s.charAt(i));
+//        for (int i : index)
+//            printStringStartingFrom(i);
+    }
+
+    private void printStringStartingFrom(int i) {
+        for (int k = i; k < i + inputString.length(); k++)
+            System.out.print(inputString.charAt(k % inputString.length()));
+        System.out.println();
     }
 
     private void msdSort(int lo, int hi, int offset) {
-        if (lo >= hi) return;
+        if (lo >= hi || offset >= inputString.length()) return;
         int lt = lo, gt = hi;
-        char v = getCharAt(lo + offset, 0);
+        char v = getCharAt(lo, offset);
 
         int i = lo + 1;
         while (i <= gt) {
-            int t = getCharAt(i, offset);
+            char t = getCharAt(i, offset);
             if (t < v) exchange(lt++, i++);
             else if (t > v) exchange(i, gt--);
             else i++;
         }
 
         msdSort(lo, lt - 1, offset);
-        if (lt!=gt) msdSort(lt, gt, offset + 1);
+        if (lt != gt) msdSort(lt, gt, offset + 1);
         msdSort(gt + 1, hi, offset);
     }
 
@@ -59,6 +61,6 @@ public class CircularSuffixArray {
     }
 
     public static void main(String[] args) {
-        new CircularSuffixArray("AFRICA");
+        new CircularSuffixArray("*************");
     }
 }
