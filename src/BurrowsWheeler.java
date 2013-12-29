@@ -1,6 +1,22 @@
 public class BurrowsWheeler {
     // apply Burrows-Wheeler encoding, reading from standard input and writing to standard output
     public static void encode() {
+        String s = BinaryStdIn.readString();
+
+        CircularSuffixArray circularSuffixArray = new CircularSuffixArray(s);
+
+        for (int i = 0; i < circularSuffixArray.length(); i++) {
+            if (circularSuffixArray.index(i) == 0) {
+                BinaryStdOut.write(i);
+                break;
+            }
+        }
+
+        for (int i = 0; i < circularSuffixArray.length(); i++) {
+            BinaryStdOut.write(s.charAt(circularSuffixArray.index(i)), 8);
+        }
+
+        BinaryStdOut.flush();
 
     }
 
