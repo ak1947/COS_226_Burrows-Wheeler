@@ -1,21 +1,21 @@
 public class MoveToFront {
     // apply move-to-front encoding, reading from standard input and writing to standard output
     public static void encode() {
-
-        char charAtBeginning = 0;
-        int[] indexOfChar = new int[256];
+        int[] charAtIndex = new int[256];
 
         for (int i = 0; i < 256; i++)
-            indexOfChar[i] = i;
+            charAtIndex[i] = i;
 
         while (!BinaryStdIn.isEmpty()) {
             char readChar = BinaryStdIn.readChar(8);
-            // swap first and current char
-            int currentCharIndex = indexOfChar[readChar];
+            int currentCharIndex = 0;
+            while (charAtIndex[currentCharIndex] != readChar)
+                currentCharIndex++;
             BinaryStdOut.write(currentCharIndex, 8);
-            indexOfChar[readChar] = 0;
-            indexOfChar[charAtBeginning] = currentCharIndex;
-            charAtBeginning = readChar;
+            // move readChar to front! increase index of the rest of characters
+            for (int i = currentCharIndex; i > 0; i--)
+                charAtIndex[i] = charAtIndex[i - 1];
+            charAtIndex[0] = readChar;
         }
     }
 
@@ -23,18 +23,19 @@ public class MoveToFront {
     public static void decode() {
 
         int charAtBeginning = 0;
-        int[] charAtPosition = new int[256];
+        int[] charAtIndex = new int[256];
 
         for (int i = 0; i < 256; i++)
-            charAtPosition[i] = i;
+            charAtIndex[i] = i;
 
         while (!BinaryStdIn.isEmpty()) {
-            char charPosition = BinaryStdIn.readChar(8);
-            // print char at position
-            BinaryStdOut.write(charAtPosition[charPosition], 8);
-            charAtBeginning = charAtPosition[0];
-            charAtPosition[0] = charAtPosition[charPosition];
-            charAtPosition[charPosition] = charAtBeginning;
+            int curCharIndex = BinaryStdIn.readChar(8);
+            int curChar = charAtIndex[curCharIndex];
+            BinaryStdOut.write(curChar, 8);
+
+            for (int i = curCharIndex; i > 0; i--)
+                charAtIndex[i] = charAtIndex[i - 1];
+            charAtIndex[0] = curChar;
         }
 
     }
