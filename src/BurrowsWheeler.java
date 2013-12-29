@@ -41,23 +41,22 @@ public class BurrowsWheeler {
 
         int[] next = new int[chars.length];
 
-        int[] index = new int[256];
+        int[] index = new int[257];
 
         for (char c : chars)
-            index[c]++;
-        for (char c = 1; c < 256; c++)
-            index[c] += index[c - 1];
+            index[c + 1]++;
+        for (char c = 0; c < 256; c++)
+            index[c + 1] += index[c];
         for (int i = 0; i < chars.length; i++) {
-            next[index[chars[i] - 1]++] = i;
+            next[index[chars[i]]++] = i;
         }
 
         for (int i = 0; i < chars.length; i++) {
             BinaryStdOut.write(sortedChars[cur], 8);
-            System.out.print(sortedChars[cur]);
+//            System.out.print(sortedChars[cur]);
             cur = next[cur];
         }
-
-
+        BinaryStdOut.flush();
     }
 
     // if args[0] is '-', apply Burrows-Wheeler encoding
