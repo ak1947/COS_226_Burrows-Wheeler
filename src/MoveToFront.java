@@ -1,23 +1,37 @@
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.LinkedList;
 
 public class MoveToFront {
     // apply move-to-front encoding, reading from standard input and writing to standard output
     public static void encode() {
-        LinkedList linkedList = new LinkedList();
+        int[] charAtIndex = new int[256];
+        int[] next = new int[256];
+        int start = 0;
 
-        for (char i = 0; i < 256; i++){
-            linkedList.add(i);
+        for (int i = 0; i < 256; i++) {
+            charAtIndex[i] = i;
+            next[i] = i + 1;
         }
 
         while (!BinaryStdIn.isEmpty()) {
             char readChar = BinaryStdIn.readChar(8);
-            int currentCharIndex = linkedList.indexOf(readChar);
-            BinaryStdOut.write(currentCharIndex, 8);
+            int numberOfHops = 0;
+            int currentCharIndex = start;
+            int prevCharIndex = -1;
+            while (charAtIndex[currentCharIndex] != readChar) {
+                prevCharIndex = currentCharIndex;
+                currentCharIndex = next[currentCharIndex];
+                numberOfHops++;
+            }
+            BinaryStdOut.write(numberOfHops, 8);
+//            System.out.println(numberOfHops);
             // move readChar to front! increase index of the rest of characters
-            linkedList.remove(currentCharIndex);
-            linkedList.add(0, readChar);
+
+            if (prevCharIndex != -1) {
+                next[prevCharIndex] = next[currentCharIndex];
+                next[currentCharIndex] = start;
+            }
+            start = currentCharIndex;
         }
 
         BinaryStdOut.flush();
@@ -47,7 +61,7 @@ public class MoveToFront {
     // if args[0] is '-', apply move-to-front encoding
     // if args[0] is '+', apply move-to-front decoding
     public static void main(String[] args) throws FileNotFoundException {
-//        System.setIn(new FileInputStream("abra.txt"));
+        System.setIn(new FileInputStream("amendments.txt"));
         if (args[0].equals("-")) encode();
         else if (args[0].equals("+")) decode();
         else throw new IllegalArgumentException("Illegal command line argument");
